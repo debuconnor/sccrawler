@@ -6,7 +6,9 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func start(email, pw string) (result string){
+func start(email, pw, pageNum string, c chan<- string) {
+	var result string
+
 	opts :=append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.DisableGPU,		
 		chromedp.Flag("headless", true),
@@ -16,8 +18,9 @@ func start(email, pw string) (result string){
 
 	ctx, cancel = chromedp.NewContext(ctx)
 	defer cancel()
-	ctx, cancel = context.WithTimeout(ctx, 60*time.Second)
+	ctx, cancel = context.WithTimeout(ctx, 5*time.Second) // recommand time = page * 4 sec
 	defer cancel()
+
 	err := chromedp.Run(ctx,
 						chromedp.Navigate(`https://partner.spacecloud.kr/auth/login`),
 						chromedp.WaitVisible(`#email`),
@@ -26,15 +29,14 @@ func start(email, pw string) (result string){
 						chromedp.SendKeys(`#pw`, pw, chromedp.ByID),
 						chromedp.Click(`.member_inner > form > fieldset > button`, chromedp.NodeVisible),
 						chromedp.Sleep(1*time.Second),
-						chromedp.Navigate(`https://partner.spacecloud.kr/reservation`),
+						chromedp.Navigate(`https://partner.spacecloud.kr/reservation?page=`+pageNum),
 						chromedp.Sleep(1*time.Second),
 						chromedp.OuterHTML(`.list_box_wrap`, &result, chromedp.NodeVisible),
-						chromedp.Sleep(1*time.Second),
 					)
 
 	if err != nil{
 		panic(err)
 	}
 
-	return
+	c <- result
 }
