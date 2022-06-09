@@ -18,7 +18,7 @@ func Start(email, pw, pageNum string, c chan<- string) {
 
 	ctx, cancel = chromedp.NewContext(ctx)
 	defer cancel()
-	ctx, cancel = context.WithTimeout(ctx, 5*time.Second) // recommand time = page * 4 sec
+	ctx, cancel = context.WithTimeout(ctx, 20*time.Second) // recommand time = page * 4 sec
 	defer cancel()
 
 	err := chromedp.Run(ctx,
