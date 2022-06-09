@@ -1,4 +1,4 @@
-package main
+package sccrawler
 
 import (
 	"time"
@@ -6,7 +6,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func start(email, pw, pageNum string, c chan<- string) {
+func Start(email, pw, pageNum string, c chan<- string) {
 	var result string
 
 	opts :=append(chromedp.DefaultExecAllocatorOptions[:],

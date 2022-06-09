@@ -1,11 +1,11 @@
-package main
+package sccrawler
 
 import (
 	"strings"
 	"github.com/PuerkitoBio/goquery"
 )
 
-func parseHtml(html string) (result [][]string){
+func ParseHtml(html string) (result [][]string){
 	_html, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 
 	if err != nil{
@@ -19,21 +19,21 @@ func parseHtml(html string) (result [][]string){
 		num = strings.ReplaceAll(num, "예약번호 ", "")
 
 		user := sel.Find(".user").Text()
-		user = removeBlanks(user)
+		user = RemoveBlanks(user)
 		user = strings.ReplaceAll(user, "예약자명", "")
 
 		tel := sel.Find(".tel").Text()
-		tel = removeBlanks(tel)
+		tel = RemoveBlanks(tel)
 		tel = strings.ReplaceAll(tel, "전화번호", "")
 		tel = strings.ReplaceAll(tel, "-", "")
 
 		place := sel.Find(".place").Text()
-		place = removeBlanks(place)
+		place = RemoveBlanks(place)
 		place = strings.ReplaceAll(place, "예약공간", "")
 		place = strings.Split(place, "-")[0]
 
 		date := sel.Find(".date").Text()
-		date = removeBlanks(date)
+		date = RemoveBlanks(date)
 		date = strings.ReplaceAll(date, "날짜/시간", "")
 
 		result = append(result, []string{num, user, tel, place, date})
@@ -42,7 +42,7 @@ func parseHtml(html string) (result [][]string){
 	return
 }
 
-func removeBlanks(text string) (result string){
+func RemoveBlanks(text string) (result string){
 	result = strings.ReplaceAll(text, " ", "")
 	return
 }
