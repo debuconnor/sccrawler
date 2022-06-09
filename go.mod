@@ -1,4 +1,4 @@
-module github.com/debuconnor/spacecloud-crawler
+module github.com/debuconnor/sccrawler
 
 go 1.17
 
