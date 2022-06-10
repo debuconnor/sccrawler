@@ -6,7 +6,7 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func Start(email, pw, pageNum string, timeout int, c chan<- string) {
+func Start(email, pw, pageNum string, c chan<- string) {
 	var result string
 
 	opts :=append(chromedp.DefaultExecAllocatorOptions[:],
@@ -18,7 +18,7 @@ func Start(email, pw, pageNum string, timeout int, c chan<- string) {
 
 	ctx, cancel = chromedp.NewContext(ctx)
 	defer cancel()
-	ctx, cancel = context.WithTimeout(ctx, timeout*time.Second)
+	ctx, cancel = context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 
 	err := chromedp.Run(ctx,
