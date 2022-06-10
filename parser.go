@@ -5,7 +5,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func ParseHtml(html string) (result [][]string){
+func ParseHtml(html string) (result []Reservation){
 	_html, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 
 	if err != nil{
@@ -36,7 +36,7 @@ func ParseHtml(html string) (result [][]string){
 		date = RemoveBlanks(date)
 		date = strings.ReplaceAll(date, "날짜/시간", "")
 
-		result = append(result, []string{num, user, tel, place, date})
+		result = append(result, Reservation{num, user, tel, place, date})
 	})
 
 	return
