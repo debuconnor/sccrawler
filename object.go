@@ -8,6 +8,7 @@ type Reservation struct{
 	Date	string
 }
 
-func NewObject() Reservation{
-	return Reservation{}
+func NewObject() []Reservation{
+	r := []Reservation{}
+	return r
 }
