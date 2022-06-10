@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/chromedp/chromedp v0.8.2
+	github.com/mattn/go-sqlite3 v1.14.13
 )
 
 require (
