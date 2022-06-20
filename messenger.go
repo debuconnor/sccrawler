@@ -1,6 +1,7 @@
 package sccrawler
 
 import (
+	"reflect"
 	"strconv"
 	"encoding/json"
 	"io/ioutil"
@@ -36,7 +37,12 @@ func Send(data *AligoApiData) AligoResponse{
 	result := NewResponseData()
 	
 	if err := json.Unmarshal(respBody, &resp); err == nil{
-		result.Result_code = strconv.FormatFloat(resp["result_code"].(float64), 'f', -1, 64)
+		codeType := reflect.TypeOf(resp["result_code"]).String()
+		if codeType == "string"{
+			result.Result_code = resp["result_code"].(string)
+		} else if codeType == "float64"{
+			result.Result_code = strconv.FormatFloat(resp["result_code"].(float64), 'f', -1, 64)	
+		}
 		result.Message = resp["message"].(string)
 	}
 
