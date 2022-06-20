@@ -13,14 +13,9 @@ func OpenDB(file string) (*sql.DB, error){
 	return db, nil
 }
 
-func Save(db *sql.DB, r Reservation) error{
-	tx, _ := db.Begin()
-	statement, _ := db.Prepare("insert into reservation (id, name, tel, place, date) values (?, ?, ?, ?, ?)")
-	_, err := statement.Exec(r.Id, r.Name, r.Tel, r.Place, r.Date)
+func Save(db *sql.DB, query string){
+	_, err := db.Exec(query)
 	checkError(err)
-
-	tx.Commit()
-	return nil
 }
 
 func Get(db *sql.DB, query string, key string) map[string]map[string]string{	
