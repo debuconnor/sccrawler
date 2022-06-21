@@ -35,8 +35,22 @@ func ParseHtml(html string) (result []Reservation){
 		date := sel.Find(".date").Text()
 		date = RemoveBlanks(date)
 		date = strings.ReplaceAll(date, "날짜/시간", "")
+		/* 
+		expect format converted:
+		2022.06.23(목)0~6시
+		OR
+		2022.06.21(화)11~13시
+		*/
 
-		result = append(result, Reservation{num, user, tel, place, date})
+		_date := date[:4] + "-" + date[5:7] + "-" + date[8:10] + " "
+
+		if strings.Contains(date[15:17], "~"){
+			_date += string("0") + date[15:16] + ":00:00"
+		} else {
+			_date += string(date[15:17]) + ":00:00"
+		}
+
+		result = append(result, Reservation{num, user, tel, place, _date})
 	})
 
 	return
