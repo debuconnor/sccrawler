@@ -1,8 +1,14 @@
 # spaceCloudCrawler
 
 This is for Space Cloud Hosts.
-It can be used to send SMS automatically.
 
-2 Parameters needed. It should be Space Cloude host's account.
-param1: email
-param2: pw
+Expect Workflow:
+1. Crawling reservations of Space Cloud as HTML
+2. Parsing reservations to store into DB
+3. Sending SMS to the reserved users
+
+Requirements & Test spec:
+- GCP e2-micro
+- Go 1.17
+- Sqlite3 3.37
+- Chrome
