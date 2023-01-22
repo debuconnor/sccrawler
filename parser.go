@@ -2,19 +2,22 @@ package sccrawler
 
 import (
 	"strings"
+
 	"github.com/PuerkitoBio/goquery"
 )
 
-func ParseHtml(html string) (result []Reservation){
+// Parse SC website HTML
+// Return reservation struct
+func ParseHtml(html string) (result []Reservation) {
 	_html, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 
 	list := _html.Find(".list_box")
 
-	list.Each(func(i int, sel *goquery.Selection){
+	list.Each(func(i int, sel *goquery.Selection) {
 		num := sel.Find(".reservation_num").Text()
 		num = strings.ReplaceAll(num, "예약번호 ", "")
 
@@ -35,16 +38,16 @@ func ParseHtml(html string) (result []Reservation){
 		date := sel.Find(".date").Text()
 		date = RemoveBlanks(date)
 		date = strings.ReplaceAll(date, "날짜/시간", "")
-		/* 
-		expect format converted:
-		2022.06.23(목)0~6시
-		OR
-		2022.06.21(화)11~13시
+		/*
+			expect format converted:
+			2022.06.23(목)0~6시
+			OR
+			2022.06.21(화)11~13시
 		*/
 
 		_date := date[:4] + "-" + date[5:7] + "-" + date[8:10] + " "
 
-		if strings.Contains(date[15:17], "~"){
+		if strings.Contains(date[15:17], "~") {
 			_date += string("0") + date[15:16] + ":00:00"
 		} else {
 			_date += string(date[15:17]) + ":00:00"
@@ -56,7 +59,7 @@ func ParseHtml(html string) (result []Reservation){
 	return
 }
 
-func RemoveBlanks(text string) (result string){
+func RemoveBlanks(text string) (result string) {
 	result = strings.ReplaceAll(text, " ", "")
 	return
 }
