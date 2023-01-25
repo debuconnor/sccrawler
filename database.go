@@ -8,7 +8,7 @@ import (
 
 func OpenDB(file string) (*sql.DB, error) {
 	db, err := sql.Open("sqlite3", file)
-	checkError(err)
+	checkError(err, "Sqlite3 failed to open database")
 
 	return db, nil
 }
@@ -17,18 +17,18 @@ func OpenDB(file string) (*sql.DB, error) {
 // No return data. Use for [insert, delete, update]
 func Save(db *sql.DB, query string) {
 	_, err := db.Exec(query)
-	checkError(err)
+	checkError(err, "Sqlite3 query failed: "+query)
 }
 
 // Query database
 // Result : arr[pk][column]string
 func Get(db *sql.DB, query string, key string) map[string]map[string]string {
 	rows, err := db.Query(query)
-	checkError(err)
+	checkError(err, "Sqlite3 failed to get rows: "+query)
 	defer rows.Close()
 
 	cols, err := rows.Columns()
-	checkError(err)
+	checkError(err, "Sqlite3 failed to get columns")
 
 	result := make(map[string]map[string]string)
 
@@ -55,10 +55,4 @@ func Get(db *sql.DB, query string, key string) map[string]map[string]string {
 	}
 
 	return result
-}
-
-func checkError(e error) {
-	if e != nil {
-		panic(e)
-	}
 }
