@@ -27,12 +27,23 @@ func Send(data *AligoApiData) AligoResponse {
 
 	c := &http.Client{}
 	req, err := c.PostForm(URL, payload)
-	checkError(err)
+	comment := "key:" + data.Key
+	comment += ",user_id:" + data.User_id
+	comment += ",sender:" + data.Sender
+	comment += ",receiver:" + data.Receiver
+	comment += ",msg:" + data.Msg
+	comment += ",msgType:" + data.Msg_type
+	comment += ",destination:" + data.Destination
+	comment += ",rdate:" + data.Rdate
+	comment += ",rtime:" + data.Rtime
+	comment += ",testmode:" + data.Testmode_yn
+
+	checkError(err, "Aligo failed to post form\n["+comment+"]")
 
 	defer req.Body.Close()
 
 	respBody, err := ioutil.ReadAll(req.Body)
-	checkError(err)
+	checkError(err, "Aligo failed to read sending response")
 
 	var resp map[string]interface{}
 	result := NewResponseData()
