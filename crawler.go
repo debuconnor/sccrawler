@@ -38,10 +38,7 @@ func Start(email, pw, pageNum string, c chan<- string, channum int) {
 		chromedp.OuterHTML(".list_box_wrap", &result, chromedp.NodeVisible),
 	)
 
-	if err != nil {
-		output := time.Now().String() + "\nError chan# " + strconv.Itoa(channum) + "\n" + err.Error()
-		panic(output)
-	}
+	checkError(err, "Error chan# "+strconv.Itoa(channum))
 
 	c <- result
 }
